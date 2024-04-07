@@ -1,0 +1,62 @@
+﻿@page "/Metas"
+@attribute [StreamRendering]
+
+
+@using CurrieTechnologies.Razor.SweetAlert2;
+@using NeitekDTO;
+@using NeitekApp.Services;
+@using System.Diagnostics;
+
+@inject SweetAlertService _alert; 
+@inject IMetaServices metaServices;
+
+<h3>Metas</h3>
+
+<a class="btn btn-success btn-sm mb-3" href="meta">Nueva Meta</a>
+<button type="button" class="btn btn-danger btn-sm ms-2" onclick="() => hola()">
+    <i class="oi oi-trash"></i>
+</button>
+
+
+
+@code {
+    List<MetaDTO>? listaMetas = null;
+
+    protected override async Task OnInitializedAsync(){
+
+        listaMetas = await metaServices.Lista();
+    }
+    private void hola()
+    {
+        Debug.WriteLine($"Hola");
+    }
+    private async void Eliminar(int id)
+    {
+        try
+        {
+            var resultado = await _alert.FireAsync(new SweetAlertOptions
+                {
+                    Title = "Eliminar Meta",
+                    Text = "¿Deseas eliminar este registro?",
+                    Icon = SweetAlertIcon.Question,
+                    ShowCancelButton = true
+                });
+
+            // if (resultado.IsConfirmed)
+            // {
+                var eliminado = metaServices.Eliminar(id);
+
+                // if (eliminado)
+                //     listaMetas = listaMetas!.FindAll(e => e.Id != id);
+
+            // }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"Error: {ex.Message}");
+        }
+       
+
+
+    }
+}

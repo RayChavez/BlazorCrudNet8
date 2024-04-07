@@ -1,0 +1,15 @@
+﻿@page "/Meta"
+@page "/Meta/{IdMeta:int}"
+
+@using NeitekDTO;
+@using NeitekApp.Services;
+
+@inject IMetaServices metaServices;
+@inject ITareaServices tareaService;
+@inject NavigationManager navegacion;
+
+@code {
+    [Parameter]
+    public int IdMeta { get; set; } = 0;
+
+}

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is used by the publish/package process of your Web project. You can customize the behavior of this process
+by editing this MSBuild file. In order to learn more about this please visit https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project>
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAxQ4GvaRj5k+ILj+aMwyO3AAAAAACAAAAAAAQZgAAAAEAACAAAABKqFVxmVTlPSPCJYMW9Po7QqHF/hVP0/IpA8bj/0iw8QAAAAAOgAAAAAIAACAAAADLkXiCUZou4AYw9r1Qno72z4LpCrG1D7qmYjqmUKkEFYAAAADjbUxKagvnFjhiink4LlZfaeh91WRGuaM/95ndIK7yjizEQLKmfTKSUOMtXs1UHYoN+twbtigKieEhnbLchaZOj23Tp0CtBxuuYj0bEe/CTzi9ZZThMKbjjD87J03+fCjeUGbzGg5E81YzsMKjLbXMK5WgmsxQEr1pu7YE5nEGdEAAAABn3amS4x//LtLJUgJVx1dzwlnkZ/0ttnB/3sQ5ycU+uaAlpQfDO4UIWvLoTnUIR0H/v/luhUW2k1eml3Ho5sUW</EncryptedPassword>
+    <History>True|2024-04-07T20:02:37.8030877Z;False|2024-04-07T13:59:52.6028754-06:00;True|2024-04-07T13:57:13.1638149-06:00;False|2024-04-06T00:15:40.8757447-06:00;False|2024-04-06T00:08:16.2544450-06:00;False|2024-04-06T00:07:08.0915425-06:00;False|2024-04-05T23:59:09.9178089-06:00;</History>
+    <LastFailureDetails />
+  </PropertyGroup>
+  <ItemGroup>
+    <DestinationConnectionStrings Include="cadenaSQL">
+      <Value>Server=tcp:serverdemoblazer.database.windows.net,1433%3bInitial Catalog=DemoBlazer%3bPersist Security Info=False%3bUser ID=administrador%3bPassword=#Admin123%3bMultipleActiveResultSets=False%3bEncrypt=True%3bTrustServerCertificate=True%3bConnection Timeout=30%3b</Value>
+    </DestinationConnectionStrings>
+  </ItemGroup>
+</Project>

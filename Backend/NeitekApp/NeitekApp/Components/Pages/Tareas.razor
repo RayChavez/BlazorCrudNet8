@@ -1,0 +1,109 @@
+﻿@page "/tareas"
+
+@using CurrieTechnologies.Razor.SweetAlert2;
+@using NeitekDTO;
+@using NeitekApp.Services;
+
+
+@inject SweetAlertService _alert;
+@inject ITareaServices tareaServices;
+
+
+<h3>Tareas</h3>
+
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nombre Completo</th>
+            <th>Fecha Creación</th>
+            <th>Estatus</th>
+            
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @if (listaTareas == null)
+        {
+
+            <tr>
+                <td colspan="5" align="center">
+                    <img style="width:50px" src="https://media.tenor.com/On7kvXhzml4AAAAj/loading-gif.gif" />
+                </td>
+            </tr>
+        }
+        else
+        {
+            
+            @foreach (var item in listaTareas)
+            {
+                estado = "Incompleta";
+                if (item.Estado)
+                {
+                    estado = "terminada";
+                }
+                <tr>
+                    <td>@item.Nombre</td>
+                    <td>@item.FechaCreacion</td>
+                    <td>@estado</td>
+    
+                    <td>
+                        <a class="btn btn-primary btn-sm" href="empleado/@item.Id">
+                            <i class="oi oi-pencil"></i>
+                         </a>
+                        <button type="button" class="btn btn-danger btn-sm ms-2" @onclick="(() => Eliminar(item.Id))">
+                            <i class="oi oi-trash"></i>
+                         </button>
+
+                    </td>
+                </tr>
+            }
+        }
+
+
+
+    </tbody>
+</table>
+
+
+@code {
+    List<TareaDTO>? listaTareas = null;
+    string estado = "Incompleta";
+
+    protected override async Task OnInitializedAsync()
+    {
+        listaTareas = await tareaServices.Lista();
+    }
+
+    private async void Eliminar(int id)
+    {
+        try
+        {
+            var resultado = await _alert.FireAsync(new SweetAlertOptions
+                {
+                    Title = "Eliminar Tarea",
+                    Text = "¿Deseas eliminar este registro?",
+                    Icon = SweetAlertIcon.Question,
+                    ShowCancelButton = true
+                });
+
+            if (resultado.IsConfirmed)
+            {
+                var eliminado = await tareaServices.Eliminar(id);
+
+                if (eliminado)
+                    listaTareas = listaTareas!.FindAll(e => e.Id != id);
+
+            }
+        }
+        catch (Exception ex)
+        {
+            throw;
+        }
+
+
+
+    }
+}

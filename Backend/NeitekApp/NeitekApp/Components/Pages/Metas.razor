@@ -1,13 +1,15 @@
 ﻿@page "/Metas"
-@attribute [StreamRendering]
 
-
-@using CurrieTechnologies.Razor.SweetAlert2;
 @using NeitekDTO;
 @using NeitekApp.Services;
 @using System.Diagnostics;
 
-@inject SweetAlertService _alert; 
+
+@attribute [StreamRendering]
+
+
+
+
 @inject IMetaServices metaServices;
 
 <h3>Metas</h3>
@@ -34,13 +36,13 @@
     {
         try
         {
-            var resultado = await _alert.FireAsync(new SweetAlertOptions
-                {
-                    Title = "Eliminar Meta",
-                    Text = "¿Deseas eliminar este registro?",
-                    Icon = SweetAlertIcon.Question,
-                    ShowCancelButton = true
-                });
+            // var resultado = await _alert.FireAsync(new SweetAlertOptions
+            //     {
+            //         Title = "Eliminar Meta",
+            //         Text = "¿Deseas eliminar este registro?",
+            //         Icon = SweetAlertIcon.Question,
+            //         ShowCancelButton = true
+            //     });
 
             // if (resultado.IsConfirmed)
             // {

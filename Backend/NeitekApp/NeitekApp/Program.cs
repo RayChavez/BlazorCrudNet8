@@ -1,20 +1,18 @@
-using CurrieTechnologies.Razor.SweetAlert2;
-using NeitekApp.Client.Pages;
+
 using NeitekApp.Components;
-using NeitekApp.Services;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
+    .AddInteractiveServerComponents()
     .AddInteractiveWebAssemblyComponents();
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://neitekapi.azurewebsites.net/") });
 
-builder.Services.AddScoped<IMetaServices, MetaServices>();
-builder.Services.AddScoped<ITareaServices, TareaServices>();
 
-builder.Services.AddSweetAlert2();
+builder.Services.AddBlazorBootstrap();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -36,6 +34,7 @@ app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
     .AddInteractiveWebAssemblyRenderMode()
+    .AddInteractiveServerRenderMode()
     .AddAdditionalAssemblies(typeof(NeitekApp.Client._Imports).Assembly);
 
 app.Run();

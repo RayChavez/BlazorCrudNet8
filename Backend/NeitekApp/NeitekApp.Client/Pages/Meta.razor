@@ -1,0 +1,80 @@
+﻿@page "/Meta"
+@page "/Meta/{IdMeta:int}"
+
+@rendermode @(new InteractiveWebAssemblyRenderMode(prerender: false))
+
+@using NeitekDTO;
+@using NeitekApp.Client.Services;
+
+@inject IMetaService metaServices; 
+@inject NavigationManager navegacion;
+
+
+
+<h3>@titulo</h3>
+
+<EditForm Model="meta" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator></DataAnnotationsValidator>
+    <input name="Avance" id="Avance" type="hidden" class="form-control" value="0" />
+    <div class="mb-3">
+        <label class="form-label">Nombre</label>
+        <InputText class="form-control" @bind-Value="meta.Nombre"></InputText>
+        <ValidationMessage For="@(() => meta.Nombre)"></ValidationMessage>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Fecha Creación</label>
+        <InputDate class="form-control" @bind-Value="meta.FechaCreacion"></InputDate>
+        <ValidationMessage For="@(() => meta.FechaCreacion)"></ValidationMessage>
+    </div>
+
+
+
+    <button class="btn btn-primary" type="submit">
+        @btnTexto
+    </button>
+
+    <a class="btn btn-warning" href="metas">Volver</a>
+</EditForm>
+
+
+@code {
+    [Parameter]
+    public int IdMeta { get; set; } = 0;
+
+    string titulo = string.Empty;
+    string btnTexto = string.Empty;
+
+    MetaDTO meta = new MetaDTO();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (IdMeta != 0)
+        {
+            meta = await metaServices.Buscar(IdMeta);
+            btnTexto = "Actualizar Meta";
+            titulo = "Editar Meta";
+        }
+        else
+        {
+            meta.FechaCreacion = DateTime.Today;
+            btnTexto = "Guardar Meta";
+            titulo = "Nueva Meta";
+        }
+    }
+
+    private async Task OnValidSubmit()
+    {
+        dynamic resp ;
+        if (IdMeta == 0)
+            resp = await metaServices.Guardar(meta);
+        else
+            resp= await metaServices.Editar(meta);
+
+            navegacion.NavigateTo("/metas");
+
+    }
+
+}
+ 

@@ -1,0 +1,80 @@
+﻿@page "/tarea"
+@page "/tarea/{id:int}/{IdMeta:int}"
+
+@rendermode @(new InteractiveWebAssemblyRenderMode(prerender: false))
+@inject NavigationManager navegacion;
+@inject ITareaServices tareaServices;
+
+<h3>@titulo</h3>
+
+<EditForm Model="tarea" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator></DataAnnotationsValidator>
+    <input type="hidden"class="form-control" value="@IdMeta"/>
+    <div class="mb-3">
+        <label class="form-label">Nombre</label>
+        <InputText class="form-control" @bind-Value="tarea.Nombre"></InputText>
+        <ValidationMessage For="@(() => tarea.Nombre)"></ValidationMessage>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Fecha Creación</label>
+        <InputDate class="form-control" @bind-Value="tarea.FechaCreacion"></InputDate>
+        <ValidationMessage For="@(() => tarea.FechaCreacion)"></ValidationMessage>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Estatus</label>
+        <InputCheckbox @bind-Value="tarea.Estado"></InputCheckbox>
+       
+    </div>
+
+    <button class="btn btn-primary" type="submit">
+        @btnTexto
+    </button>
+
+    <a class="btn btn-warning" href="empleados">Volver</a>
+</EditForm>
+
+
+@code {
+    [Parameter]
+    public int Id { get; set; } = 0;
+    [Parameter]
+    public int IdMeta { get; set; } = 0;
+
+    string titulo = string.Empty;
+    string btnTexto = string.Empty;
+    TareaDTO tarea = new TareaDTO();
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (Id != 0)
+        {
+            tarea = await tareaServices.Buscar(Id);
+            btnTexto = "Actualizar Tarea";
+            titulo = "Editar Tarea";
+        }
+        else
+        {
+            tarea.FechaCreacion = DateTime.Today;
+            btnTexto = "Guardar Tarea";
+            titulo = "Nueva tarea";
+        }
+    }
+
+    private async Task OnValidSubmit()
+    {
+        string idDevuelto;
+        if (Id == 0)
+            idDevuelto = await tareaServices.Guardar(tarea);
+        else
+            idDevuelto = await tareaServices.Editar(tarea);
+
+
+        if (idDevuelto != "")
+            navegacion.NavigateTo("/metas");
+
+    }
+
+
+}

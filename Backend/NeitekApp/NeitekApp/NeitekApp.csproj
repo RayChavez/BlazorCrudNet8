@@ -7,13 +7,30 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CurrieTechnologies.Razor.SweetAlert2" Version="5.6.0" />
+    <Compile Remove="Services\IMetaServices.cs" />
+    <Compile Remove="Services\ITareaServices.cs" />
+    <Compile Remove="Services\MetaServices.cs" />
+    <Compile Remove="Services\TareaServices.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="Components\Pages\Meta.razor" />
+    <Content Remove="Components\Pages\Metas.razor" />
+    <Content Remove="Components\Pages\Weather.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Blazor.Bootstrap" Version="2.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\NeitekDTO\NeitekDTO.csproj" />
     <ProjectReference Include="..\NeitekApp.Client\NeitekApp.Client.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>

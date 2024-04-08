@@ -87,6 +87,7 @@ namespace NeitekApi.Controllers
                 {
                     respApi.EsCorrecto = true;
                     respApi.Mensaje = string.Empty;
+                    respApi.Valor = meta;
                 }
             }
             catch (Exception ex)

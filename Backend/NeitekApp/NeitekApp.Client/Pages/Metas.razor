@@ -1,0 +1,111 @@
+﻿@page "/Metas"
+
+@using NeitekDTO;
+@using NeitekApp.Client.Services;
+
+@rendermode @(new InteractiveWebAssemblyRenderMode(prerender: false))
+@inject IMetaService metaServices;
+
+
+
+<h3>Metas</h3>
+
+<a class="btn btn-success btn-sm mb-3" href="meta">Nueva Meta</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nombre Completo</th>
+            <th>Fecha Creación</th>
+            <th>Avance</th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @if (listaMetas == null)
+        {
+
+            <tr>
+                <td colspan="5" align="center">
+                    <img style="width:50px" src="https://media.tenor.com/On7kvXhzml4AAAAj/loading-gif.gif" />
+                </td>
+            </tr>
+        }
+        else
+        {
+
+            @foreach (var item in listaMetas)
+            {
+              
+                <tr>
+                    <td>@item.Nombre</td>
+                    <td>@item.FechaCreacion</td>
+                    <td>@item.Avance</td>
+
+                    <td>
+                        <a class="btn btn-primary btn-sm" href="meta/@item.Id">
+                            <i class="oi oi-pencil"></i>
+                        </a>
+                        <button type="button" class="btn btn-danger btn-sm ms-2" @onclick="(() => Eliminar(item.Id))">
+                            <i class="oi oi-trash"></i>
+                        </button>
+
+                    </td>
+                </tr>
+            }
+        }
+
+
+
+    </tbody>
+</table>
+
+<ConfirmDialog @ref="dialog" />
+
+
+@code {
+    List<MetaDTO>? listaMetas = null;
+    private ConfirmDialog dialog;
+    protected override async Task OnInitializedAsync(){
+
+         listaMetas = await metaServices.Lista();
+    }
+
+    private async void Eliminar(int id)
+    {
+        try
+        {
+            var options = new ConfirmDialogOptions
+                {
+                    YesButtonText = "Si",
+                    YesButtonColor = ButtonColor.Success,
+                    NoButtonText = "Cancelar",
+                    NoButtonColor = ButtonColor.Danger
+                };
+
+            var confirmation = await dialog.ShowAsync(title: "Eliminar Meta",
+                                                   message1: "El registro seleccionado se eliminara, ¿Desea continuar?.",
+                                                   confirmDialogOptions: options);
+
+            if (confirmation)
+            {
+                var eliminado = await metaServices.Eliminar(id);
+
+                if (eliminado)
+                    listaMetas = listaMetas!.FindAll(e => e.Id != id);
+
+                listaMetas = await metaServices.Lista();
+
+            }
+        }
+        catch (Exception ex)
+        {
+     
+        }
+       
+
+
+    }
+}
